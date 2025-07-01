@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BExSTEM - Igniting Tomorrow's Entrepreneurs</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* Global Styles & BExSTEM Brand Palette */
+        :root {
+            --night-black: #111111;
+            --dark-bg: #1A1A1A;
+            --baby-powder: #FFFFFB;
+            --candy-apple: #FF0800;
+            --dark-slate: #2B2B2B; 
+            --medium-gray: #B0B0B0;
+            --font-primary: 'Poppins', sans-serif; 
+            --font-secondary: 'Roboto', sans-serif;
+            --candy-apple-rgb: 255, 8, 0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--night-black);
+            color: var(--baby-powder);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        body.mobile-menu-open { overflow: hidden; }
+        
+        /* Header & Navigation Styling */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 0;
+            z-index: 999;
+            background-color: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: top 0.3s;
+        }
+        .navbar-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a { display: flex; align-items: center; }
+        .logo img { max-height: 40px; }
+        
+        .nav-links ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            gap: 3rem;
+        }
+        .nav-links a { color: var(--baby-powder); text-decoration: none; font-weight: 500; font-family: var(--font-secondary); transition: color 0.3s; }
+        .nav-links a:hover { color: var(--candy-apple); }
+        .nav-cta-button {
+            padding: 8px 22px;
+            border: 2px solid var(--candy-apple);
+            border-radius: 20px;
+            font-weight: 600 !important;
+            font-family: var(--font-primary) !important;
+            transition: all 0.3s;
+        }
+        .nav-cta-button:hover { background-color: var(--candy-apple); color: var(--baby-powder); }
+        .hamburger-menu { display: none; cursor: pointer; }
+        .hamburger-menu span { display: block; width: 25px; height: 3px; margin: 5px 0; background-color: var(--baby-powder); transition: all 0.4s ease; }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            max-width: 320px;
+            height: 100vh;
+            background-color: var(--dark-bg);
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            transition: right 0.4s ease-in-out;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav ul { list-style: none; padding: 0; width: 100%; text-align: center; }
+        .mobile-nav li { margin: 2rem 0; }
+        .mobile-nav a { color: var(--baby-powder); text-decoration: none; font-size: 1.5rem; font-family: var(--font-primary); font-weight: 700; }
+        
+        .section { width: 100%; padding: 120px 20px; opacity: 0; transform: translateY(30px); transition: opacity 1s ease-out, transform 1s ease-out; }
+        .section.is-visible { opacity: 1; transform: translateY(0); }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 4rem; }
+        .section-title h2 {
+            font-family: var(--font-primary);
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .section-title h2 img {
+            height: clamp(5rem, 12.5vw, 7.5rem);
+        }
+        .section-title p { font-size: 1.1rem; color: var(--medium-gray); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+        
+        /* Hero Section Styling */
+        .hero-section { opacity: 1; transform: translateY(0); min-height: 100vh; display: flex; align-items: center; padding-top: 90px; padding-left: 40px; padding-right: 40px; background-image: url('hero-wallpaper.png'); background-size: cover; background-position: bottom center; background-repeat: no-repeat; }
+        .hero-container { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; text-align: right; }
+        .hero-content { max-width: 50%; }
+        .hero-slogan { font-family: var(--font-primary); font-weight: 800; font-size: clamp(2.8rem, 8vw, 5.2rem); line-height: 1.1; color: var(--baby-powder); margin-bottom: 1.5rem; }
+        .slogan-word { display: block; opacity: 0; animation: sloganFadeInUp 0.8s ease-out forwards; }
+        .hero-subheadline { font-size: clamp(1rem, 2.5vw, 1.15rem); font-weight: 500; color: var(--medium-gray); line-height: 1.7; margin-bottom: 2.5rem; }
+        
+        .hero-cta-container {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .hero-cta-button { display: inline-block; padding: 14px 35px; font-family: var(--font-primary); font-weight: 600; text-decoration: none; border-radius: 30px; transition: all 0.3s ease; text-align: center; cursor: pointer; font-size: 1.1rem; background-color: var(--candy-apple); color: var(--baby-powder); border: 2px solid var(--candy-apple); }
+        .hero-cta-button:hover { background-color: #D60700; border-color: #D60700; transform: translateY(-3px); box-shadow: 0 4px 20px rgba(255, 8, 0, 0.4); }
+        .hero-cta-button-secondary {
+            background-color: transparent;
+            color: var(--baby-powder);
+            border-color: var(--baby-powder);
+        }
+        .hero-cta-button-secondary:hover {
+            background-color: var(--baby-powder);
+            border-color: var(--baby-powder);
+            color: var(--night-black);
+            box-shadow: 0 4px 20px rgba(255, 255, 251, 0.2);
+        }
+        @keyframes sloganFadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Orbital Journey Styling */
+        .orbital-journey-container { display: flex; align-items: center; justify-content: center; gap: 5rem; flex-wrap: wrap; }
+        .orbital-graphic { position: relative; width: 450px; height: 450px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .central-orb { width: 55%; height: 55%; z-index: 5; }
+        .orbital-path { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; animation: pulsePathGlow 5s ease-in-out infinite; box-shadow: 0 0 0 1.5px rgba(255, 255, 251, 0.1); }
+        .stage-node { position: absolute; width: 70px; height: 70px; background-color: rgba(43, 43, 43, 0.5); backdrop-filter: blur(3px); border: 2px solid rgba(255, 8, 0, 0.3); box-shadow: 0 0 10px rgba(255, 8, 0, 0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-family: var(--font-primary); font-weight: 600; font-size: 1.2rem; color: var(--medium-gray); cursor: pointer; transition: all 0.4s ease; z-index: 10; }
+        .stage-node:hover { transform: scale(1.15); background-color: rgba(43, 43, 43, 0.8); border-color: var(--candy-apple); color: var(--baby-powder); }
+        .stage-node.active { transform: scale(1.15); background-color: var(--candy-apple); border-color: var(--candy-apple); color: var(--baby-powder); box-shadow: 0 0 25px rgba(255, 8, 0, 0.6); animation: pulseGlow 2s ease-in-out infinite; }
+        .node-1 { top: -35px; left: calc(50% - 35px); } .node-2 { top: calc(50% - 35px); right: -35px; } .node-3 { bottom: -35px; left: calc(50% - 35px); } .node-4 { top: calc(50% - 35px); left: -35px; }
+        .orbital-info-panel { flex-basis: 45%; max-width: 500px; position: relative; height: 250px; }
+        .stage-content { position: absolute; top: 0; left: 0; width: 100%; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-out, transform 0.4s ease-out; transform: translateY(15px); }
+        .stage-content.active { opacity: 1; visibility: visible; transform: translateY(0); transition-delay: 0.3s; }
+        .stage-number { font-family: var(--font-primary); color: var(--candy-apple); font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 1rem; text-transform: uppercase; }
+        .orbital-info-panel h3 { font-family: var(--font-primary); font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--baby-powder); margin-bottom: 1rem; }
+        .orbital-info-panel p { font-size: 1.05rem; color: var(--medium-gray); line-height: 1.8; }
+        
+        /* Sponsorship Section Styling */
+        .sponsor-section { display: flex; align-items: center; justify-content: center; }
+        .sponsor-module { width: 100%; max-width: 900px; margin: 0 auto; padding: 80px 40px; text-align: center; background-color: var(--dark-bg); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .investment-module { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .blob-animation { width: 220px; height: 220px; margin-bottom: 2rem; }
+        .headline-container { height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+        .investment-headline { font-family: var(--font-primary); font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; transition: opacity 0.5s ease; }
+        .investment-cta-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
+        .investment-button { display: inline-block; padding: 20px 50px; font-family: var(--font-primary); font-weight: 800; font-size: 1.25rem; text-decoration: none; border-radius: 50px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease; user-select: none; border: 2px solid var(--candy-apple); }
+        .investment-button.primary { background-color: var(--candy-apple); color: var(--baby-powder); box-shadow: 0 5px 25px rgba(255, 8, 0, 0.4); }
+        .investment-button.primary:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(255, 8, 0, 0.6); }
+        .investment-button.secondary { background-color: transparent; color: var(--candy-apple); }
+        .investment-button.secondary:hover { transform: scale(1.05); background-color: var(--candy-apple); color: var(--baby-powder); box-shadow: 0 10px 40px rgba(255, 8, 0, 0.6); }
+        .sponsor-links { margin-top: 2.5rem; color: var(--medium-gray); font-size: 0.95rem;}
+        .sponsor-links a { color: var(--baby-powder); text-decoration: underline; transition: color 0.3s; }
+        .sponsor-links a:hover { color: var(--candy-apple); }
+
+        /* "THE HORIZON" Sign-Up Section Styling */
+        .horizon-cta-section { text-align: center; }
+        .horizon-content { max-width: 950px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .horizon-headline { font-family: var(--font-primary); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+        .headline-line { display: block; }
+        .venture-word { color: var(--candy-apple); }
+        .horizon-subheadline { font-size: 1.1rem; color: var(--medium-gray); max-width: 550px; margin: 0 auto 3rem auto; line-height: 1.7; }
+        .horizon-benefits { list-style: none; display: flex; justify-content: center; gap: 2rem 3rem; margin-bottom: 4rem; width: 100%; flex-wrap: wrap; }
+        .horizon-benefits li { font-size: 1.05rem; font-weight: 500; display: flex; align-items: center; gap: 0.75rem; }
+        .horizon-benefits li::before { content: '✓'; color: var(--candy-apple); font-weight: 800; font-size: 1.2rem; margin-right: 0.2rem; }
+        .horizon-cta-button { display: inline-block; padding: 18px 60px; font-family: var(--font-primary); font-weight: 700; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; font-size: 1.2rem; background-color: var(--candy-apple); color: var(--baby-powder); border: none; box-shadow: 0 5px 25px rgba(255, 8, 0, 0.3); animation: pulseCta 2.5s ease-in-out infinite; }
+        .horizon-cta-button:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 8px 40px rgba(255, 8, 0, 0.5); animation-play-state: paused; }
+        
+        /* Footer Styling */
+        .footer {
+            background-color: var(--dark-bg);
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .footer-grid {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-col h4 {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--baby-powder);
+        }
+        .footer-col p, .footer-col a {
+            color: var(--medium-gray);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            display: block;
+            font-size: 0.95rem;
+        }
+        .footer-col a:hover { color: var(--candy-apple); }
+        .footer-logo { max-width: 150px; margin-bottom: 1rem; }
+        .footer-bottom {
+            width: 90%;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+        .footer-bottom a { 
+            color: var(--medium-gray); 
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+        .footer-bottom a:hover {
+            color: var(--baby-powder);
+        }
+
+
+        /* Keyframe Animations */
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 15px rgba(255, 8, 0, 0.4); } 50%  { box-shadow: 0 0 35px rgba(255, 8, 0, 0.8); } 100% { box-shadow: 0 0 15px rgba(255, 8, 0, 0.4); } }
+        @keyframes pulseCta { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+        @keyframes pulsePathGlow { 0%, 100% { box-shadow: 0 0 0 1.5px rgba(255, 255, 251, 0.1), 0 0 5px rgba(255, 255, 251, 0.05); } 50% { box-shadow: 0 0 0 1.5px rgba(255, 255, 251, 0.2), 0 0 20px rgba(255, 251, 251, 0.1); } }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) { .orbital-journey-container { flex-direction: column; gap: 2rem; } .orbital-graphic { width: 350px; height: 350px; margin-bottom: 2rem; } .orbital-info-panel { text-align: center; max-width: 600px; height: auto; } .stage-content { position: relative; } }
+        @media (max-width: 900px) { .hero-container { justify-content: center; text-align: center; } .hero-content { max-width: 80%; } .hero-section { background-position: center bottom; } .hero-cta-container { justify-content: center; } }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger-menu { display: block; }
+            .horizon-benefits { justify-content: flex-start; gap: 1rem 2rem; }
+            .footer-grid { text-align: center; }
+        }
+        @media (max-width: 600px) { .hero-section { background-image: none; align-items: center; text-align: center; } .hero-content { max-width: 100%; } .horizon-benefits { flex-direction: column; align-items: center; } .sponsor-module { padding: 60px 20px; } }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="#"><img src="bexstem-logo.png" alt="BExSTEM Logo"></a>
+            </div>
+            <nav class="nav-links">
+                <ul>
+                    <li><a href="#stages">Challenge</a></li>
+                    <li><a href="#sponsorship">Sponsor</a></li>
+                    <li><a href="https://forms.gle/YqgTqB7uqxseExe87" target="_blank" rel="noopener noreferrer" class="nav-cta-button">Register</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION -->
+    <nav class="mobile-nav">
+        <ul>
+            <li><a href="#stages">Challenge</a></li>
+            <li><a href="#sponsorship">Sponsor</a></li>
+            <li><a href="https://forms.gle/YqgTqB7uqxseExe87" target="_blank" rel="noopener noreferrer">Register</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-slogan"><span class="slogan-word" style="animation-delay: 0.2s;">Igniting</span><span class="slogan-word" style="animation-delay: 0.4s;">Tomorrow's</span><span class="slogan-word" style="animation-delay: 0.6s;">Entrepreneurs</span></h1>
+                <p class="hero-subheadline">BExSTEM is the premier launchpad where students transform bold STEM ideas into real-world ventures. We provide the tools, the mentorship, and the stage—you provide the vision.</p>
+                <div class="hero-cta-container">
+                    <a href="#stages" class="hero-cta-button">Discover Your Path</a>
+                    <a href="#sponsorship" class="hero-cta-button hero-cta-button-secondary">Fuel Innovation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEXSTEM CHALLENGE SECTION -->
+    <section class="section" id="stages">
+        <div class="container">
+            <div class="section-title">
+                <h2><img src="bexstem-logo.png" alt="BExSTEM"> <span>Challenge</span></h2>
+                <p>Our four-stage gauntlet is designed to forge founders. Each phase tests a new skill, from strategy and building to launching and surviving in the real market.</p>
+            </div>
+            <div class="orbital-journey-container">
+                <div class="orbital-graphic"><div class="central-orb"><lottie-player src="bexstem-orb.json" background="transparent" speed="0.5" style="width: 100%; height: 100%;" loop autoplay></lottie-player></div><div class="orbital-path"><div class="stage-node node-1 active" data-node="1"><span>01</span></div><div class="stage-node node-2" data-node="2"><span>02</span></div><div class="stage-node node-3" data-node="3"><span>03</span></div><div class="stage-node node-4" data-node="4"><span>04</span></div></div></div>
+                <div class="orbital-info-panel">
+                    <div class="stage-content active" data-stage="1"><span class="stage-number">Stage 01</span><h3>The Blueprint</h3><p>Every great venture begins with a blueprint. In this foundational stage, you will architect your success by developing a comprehensive strategic plan and validating your idea with real-world market research.</p></div>
+                    <div class="stage-content" data-stage="2"><span class="stage-number">Stage 02</span><h3>The Forge</h3><p>In the Forge, concepts are given form. You will build a working Minimum Viable Product (MVP), focusing on the core features that solve a real problem for your first customers.</p></div>
+                    <div class="stage-content" data-stage="3"><span class="stage-number">Stage 03</span><h3>The Launchpad</h3><p>From The Launchpad, ventures prepare for liftoff. You will establish your professional foundation and become a "BExSTEM Certified Venture," ready for market entry.</p></div>
+                    <div class="stage-content" data-stage="4"><span class="stage-number">Stage 04</span><h3>The BExSTEM Crucible</h3><p>In The Crucible, ventures are proven. You will enter the real market to acquire customers, generate revenue, and prove your venture can survive and thrive under pressure.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- "THE HORIZON" SIGN-UP SECTION -->
+    <section class="section horizon-cta-section" id="register-section">
+        <div class="horizon-content">
+            <h2 class="horizon-headline">
+                <span class="headline-line">The Journey to Your</span>
+                <span class="headline-line"><span class="venture-word">Venture</span> Starts Here.</span>
+            </h2>
+            <p class="horizon-subheadline">The BExSTEM Challenge is your dedicated ecosystem for growth. We're here to provide the structure and support you need to step confidently into the world of entrepreneurship.</p>
+            <ul class="horizon-benefits">
+                <li>Build a Business</li>
+                <li>Gain Mentorship</li>
+                <li>Win Prizes</li>
+            </ul>
+            <a href="https://forms.gle/YqgTqB7uqxseExe87" target="_blank" rel="noopener noreferrer" class="horizon-cta-button">Register</a>
+        </div>
+    </section>
+
+    <!-- SPONSORSHIP SECTION -->
+    <section class="section sponsor-section" id="sponsorship">
+        <div class="sponsor-module" id="sponsor-module">
+            <div class="investment-module">
+                <div class="blob-animation"><lottie-player id="blob-lottie" src="sponsor-blob.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop autoplay></lottie-player></div>
+                <div class="headline-container"><h2 class="investment-headline" id="investment-text">An idea is pure potential.</h2></div>
+                <div class="investment-cta-container">
+                    <a href="https://forms.gle/xpLSELRBssdnJX247" target="_blank" rel="noopener noreferrer" class="investment-button primary" id="investment-trigger">Sponsor an Enterprise</a>
+                    <a href="https://forms.gle/Xc9yy3ccyLJvxjbn9" target="_blank" rel="noopener noreferrer" class="investment-button secondary" id="judging-trigger">Shape the Future</a>
+                </div>
+                <div class="sponsor-links">Or, <a href="path/to/your/deck.pdf" download>download our sponsorship deck</a>.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="bexstem-monochrome.png" alt="BExSTEM Monochrome Logo" class="footer-logo">
+                <p>BExSTEM is a fiscally sponsored project of Hack Club, a 501(c)(3) nonprofit (EIN: 81-2908499).</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="#">Home</a>
+                <a href="#stages">Challenge</a>
+                <a href="#sponsorship">Sponsor</a>
+                <a href="https://forms.gle/YqgTqB7uqxseExe87" target="_blank" rel="noopener noreferrer">Register</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 BExSTEM. All Rights Reserved. | <a href="https://docs.google.com/document/d/e/2PACX-1vRVPCRCOmDujTQ85GHBOaZDpM_BL_YQMykPX_eSHVoayItWxOb4xg9M_zUoVVWOZkZ-iZFfDBbZ9KJp/pub" target="_blank" rel="noopener noreferrer">Privacy Policy</a> | <a href="https://docs.google.com/document/d/e/2PACX-1vQpvoSxU0242lW81sEqtsWaANO5iTTZSgpzGQyum6DfWeSwYa0o9j5FkZWlVSyw80qUR1_1FYlFKQgu/pub" target="_blank" rel="noopener noreferrer">Terms of Service</a></p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Mobile Navigation Logic
+    const hamburger = document.querySelector('.hamburger-menu');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+
+    const openMobileMenu = () => {
+        mobileNav.classList.add('open');
+        document.body.classList.add('mobile-menu-open');
+    };
+
+    const closeMobileMenu = () => {
+        mobileNav.classList.remove('open');
+        document.body.classList.remove('mobile-menu-open');
+    };
+
+    if(hamburger && mobileNav) {
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (mobileNav.classList.contains('open')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+    }
+
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+    
+    // Orbital Journey Interactivity
+    const nodes = document.querySelectorAll('.stage-node');
+    const contents = document.querySelectorAll('.stage-content');
+    if (nodes.length > 0 && contents.length > 0) {
+        nodes.forEach(node => {
+            node.addEventListener('click', (e) => {
+                e.preventDefault();
+                const stageToShow = node.getAttribute('data-node');
+                if(node.classList.contains('active')) return;
+                contents.forEach(c => c.classList.remove('active'));
+                nodes.forEach(n => n.classList.remove('active'));
+                node.classList.add('active');
+                setTimeout(() => {
+                    const newContent = document.querySelector(`.stage-content[data-stage='${stageToShow}']`);
+                    if (newContent) newContent.classList.add('active');
+                }, 50);
+            });
+        });
+    }
+
+    // Sponsor Module Interactivity
+    const sponsorModule = document.getElementById('sponsor-module');
+    const investmentTrigger = document.getElementById('investment-trigger');
+    const judgingTrigger = document.getElementById('judging-trigger');
+    const headlineText = document.getElementById('investment-text');
+
+    if (sponsorModule && investmentTrigger && judgingTrigger && headlineText) {
+        const originalText = "An idea is pure potential.";
+        const sponsorHoverText = "Your sponsorship builds an enterprise.";
+        const judgeHoverText = "Your expertise forges a founder.";
+
+        investmentTrigger.addEventListener('mouseenter', () => {
+            headlineText.style.opacity = '0';
+            setTimeout(() => { headlineText.textContent = sponsorHoverText; headlineText.style.opacity = '1'; }, 300);
+        });
+
+        judgingTrigger.addEventListener('mouseenter', () => {
+            headlineText.style.opacity = '0';
+            setTimeout(() => { headlineText.textContent = judgeHoverText; headlineText.style.opacity = '1'; }, 300);
+        });
+
+        sponsorModule.addEventListener('mouseleave', () => {
+            if (headlineText.textContent !== originalText) {
+                headlineText.style.opacity = '0';
+                setTimeout(() => { headlineText.textContent = originalText; headlineText.style.opacity = '1'; }, 300);
+            }
+        });
+    }
+
+    // Section Scroll-in Animation
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+        });
+    }, { threshold: 0.1 });
+    if (sections.length > 0) { sections.forEach(section => { if(!section.classList.contains('hero-section')) observer.observe(section); }); }
+});
+</script>
+
+</body>
+</html>
